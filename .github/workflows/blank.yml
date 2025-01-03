@@ -10,7 +10,7 @@ on:
 
 jobs:
   job01:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v4
       - name: Run a one-line script
