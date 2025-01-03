@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Step 1 - Checkout code
-      - uses: actions/checkout@v2
+        uses: actions/checkout@v2
 
       - name: Step 2 - Print 
         run: echo Essa é a Step 2
