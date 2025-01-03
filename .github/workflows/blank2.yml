@@ -1,0 +1,30 @@
+# Define o nome do Workflow
+name: Test Workflow
+
+# Define quando o Workflow será disparado
+on:
+  push:
+    branches: [ "main","tst","dev" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Habilita rodar manualmente
+  workflow_dispatch:
+
+# Define os jobs que o Workflow executará
+jobs:
+  test_job:
+    name: executando teste de job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Step 1 - Checkout code
+      - uses: actions/checkout@v2
+
+      - name: Step 2 - Print 
+        run: echo Essa é a Step 2
+
+      - name: Step 3 - Print
+        run: echo Essa é a Step 3
+
+      - name: Step 4 - Print
+        run: echo Essa é a Step 4
