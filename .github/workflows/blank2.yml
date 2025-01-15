@@ -32,7 +32,7 @@ jobs:
         uses: docker/build-push-action@v6.11.0
         with:
           context: .
-          tags: 'latest'
+          tags: 'marlaamooury/tc-fase2:latest'
           push: true
 
           
