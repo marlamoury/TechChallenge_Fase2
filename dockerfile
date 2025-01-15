@@ -16,4 +16,4 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /App
 COPY --from=build-env /out .
 EXPOSE 5000
-ENTRYPOINT ["dotnet", "ContactManagement.Api.dll"]
+ENTRYPOINT ["dotnet", "ContactManagement.Api.dll", "--urls", "http://0.0.0.0:5000"]
