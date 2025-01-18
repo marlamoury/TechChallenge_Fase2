@@ -38,10 +38,12 @@ public static class ApiConfig
 
     public static void UseApiConfiguration(this WebApplication app, IWebHostEnvironment env)
     {
-        if (app.Environment.IsDevelopment())
+        if (env.IsDevelopment())
         {
+            // Swagger should be configured first to avoid interference
             app.UseSwaggerConfig();
         }
+
 
         app.UseMiddleware<ExceptionMiddleware>();
         app.UseCustomStatusCodePages();

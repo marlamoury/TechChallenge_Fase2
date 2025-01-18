@@ -1,19 +1,28 @@
-# Use a imagem do .NET SDK para build
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
-WORKDIR /App
+#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-# Copie apenas os arquivos necessários
-COPY ContactManagement.Api/ContactManagement.Api.csproj ./ContactManagement.Api/
-RUN dotnet restore ./ContactManagement.Api
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+WORKDIR /app
+EXPOSE 80
 
-# Copie o restante e publique
-COPY . ./
-WORKDIR /App/ContactManagement.Api
-RUN dotnet publish -c Release -o /out
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
 
-# Runtime
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
-WORKDIR /App
-COPY --from=build-env /out .
-EXPOSE 5000
-ENTRYPOINT ["dotnet", "ContactManagement.Api.dll", "--urls", "http://0.0.0.0:5000"]
+COPY ["ContactManagement.Api/ContactManagement.Api.csproj", "ContactManagement.Api/"]
+COPY ["ContactManagement.Application/ContactManagement.Application.csproj", "ContactManagement.Application/"]
+COPY ["ContactManagement.Domain/ContactManagement.Domain.csproj", "ContactManagement.Domain/"]
+COPY ["ContactManagement.InfraStructure/ContactManagement.InfraStructure.csproj", "ContactManagement.InfraStructure/"]
+
+RUN dotnet restore "./ContactManagement.Api/ContactManagement.Api.csproj"
+
+COPY . .
+
+WORKDIR "/src/ContactManagement.Api"
+RUN dotnet build "./ContactManagement.Api.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "./ContactManagement.Api.csproj" -c Release -o /app/publish
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "ContactManagement.Api.dll"]
