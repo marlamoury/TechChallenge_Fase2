@@ -26,7 +26,7 @@ jobs:
         uses: docker/login-action@v3.3.0
         with:     
           username: 'marlaamooury'
-          password: ${{ secrets.DOCKERHUB_PASSWORD}}
+          password: ${{ secrets.FIAP}}
           
       - name: Build and push Docker images
         uses: docker/build-push-action@v6.11.0
